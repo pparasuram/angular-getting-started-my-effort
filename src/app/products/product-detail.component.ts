@@ -16,7 +16,8 @@ export class ProductDetailComponent implements OnInit {
   errorMessage: string;
   id: number;
   // filteredProducts: IProduct [];
-  selectedProducts: IProduct [];
+  selectedProducts: IProduct [] = [];
+  products: IProduct [] = [];
   constructor(private route: ActivatedRoute, private router: Router, private productService: ProductService) {
     console.log(this.route.snapshot.paramMap.get('id'));
   }
@@ -26,15 +27,15 @@ export class ProductDetailComponent implements OnInit {
     this.pageTitle += `: ${this.id}`;
     this.productService.getProducts().subscribe({
       next: products => {
-        this.selectedProducts =
-          products.filter (product =>
-            (product.productId === this.id));
-            console.log ('new new prod detail ' + this.selectedProducts);
+        this.products = products;
+        this.selectedProducts = products;
+        console.log ('prod detail 1 ' + JSON.stringify(this.products));
+        this.product = this.products.filter (product =>
+            (product.productId === this.id))[0];
+        console.log ('new new prod detail ' + this.selectedProducts);
       },
       error: err => this.errorMessage = err
-  });
-
-    this.product = this.selectedProducts.length > 0 ? this.selectedProducts[0] : {} as IProduct;
+    });
   }
   onBack(): void {
     this.router.navigate(['/products']);
