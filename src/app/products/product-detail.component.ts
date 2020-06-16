@@ -25,7 +25,7 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id');
     this.pageTitle += `: ${this.id}`;
-    this.productService.getProducts().subscribe({
+    this.productService.getOneProduct(this.id).subscribe({
       next: products => {
         this.products = products;
         // this.selectedProducts = products;

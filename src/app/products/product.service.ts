@@ -10,6 +10,8 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class ProductService {
     private productUrl ='api/products/products.json'; 
+    products: IProduct[] =[];
+    product: IProduct;
     constructor(private http: HttpClient){}
     getProducts () : Observable <IProduct[]> {
       return this.http.get<IProduct []>(this.productUrl).pipe(
@@ -20,9 +22,10 @@ export class ProductService {
     getOneProduct (id: number) : Observable <IProduct[]> {
       console.log ('entered getOneProduct');
       return this.http.get<IProduct []>(this.productUrl).pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        tap((data => ( data.filter (product => product.productId === id)))),
+        // tap(data => console.log("data is:" + JSON.stringify(data))),
         catchError(this.handleError)
-      );
+      ); */
     }
     private handleError (err: HttpErrorResponse) {
       let errorMessage = '';
