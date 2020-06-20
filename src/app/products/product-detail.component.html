@@ -1,6 +1,10 @@
-<div class = 'card' *ngIf = 'product'>
+<div class = 'card'>
     <div class = 'card-header'>
-        {{ pageTitle + ': ' + product.productName }}
+        {{ pageTitle + ': '}}
+        <div  *ngIf = 'product; else prodIdInvalid' >
+        {{ product.productName }}
+        </div>
+        <ng-template #prodIdInvalid>!! Not Valid Product ID, hit Home, Product List, or Back buttons !!!</ng-template>
     </div>
     <div class = 'card-body'>
         <table class='table' *ngIf = 'product'>

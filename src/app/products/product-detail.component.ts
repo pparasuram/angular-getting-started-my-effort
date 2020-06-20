@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IProduct } from './product';
@@ -15,9 +15,8 @@ export class ProductDetailComponent implements OnInit {
   imageMargin: number = 2;
   errorMessage: string;
   id: number;
-  // filteredProducts: IProduct [];
-  // selectedProducts: IProduct [] = [];
   products: IProduct [] = [];
+  prodUndefined: boolean = false;
   constructor(private route: ActivatedRoute, private router: Router, private productService: ProductService) {
     console.log(this.route.snapshot.paramMap.get('id'));
   }
@@ -26,16 +25,21 @@ export class ProductDetailComponent implements OnInit {
     this.id = +this.route.snapshot.paramMap.get('id');
     this.pageTitle += `: ${this.id}`;
     this.productService.getOneProduct(this.id).subscribe({
-      next: products => {
-        this.products = products;
-        // this.selectedProducts = products;
-        console.log ('prod detail 1 ' + JSON.stringify(this.products));
-        this.product = this.products.filter (product =>
-            (product.productId === this.id))[0];
+      next: product => {
+        this.product = product;
+//        if (this.product == undefined)
+//          this.router.navigate(['/products']);
+        console.log ('prod detail 1 ' + JSON.stringify(this.product));
+//        this.product = this.products.filter (product =>
+//            (product.productId === this.id))[0];
         // console.log ('new new prod detail ' + this.selectedProducts);
       },
       error: err => this.errorMessage = err
     });
+  }
+  ngOnChanges(): void {
+    if (this.product == undefined)
+      this.prodUndefined = true;
   }
   onBack(): void {
     this.router.navigate(['/products']);
